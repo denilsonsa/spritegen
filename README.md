@@ -18,6 +18,4 @@ TODO:
     * This might allow recoloring a sprite without changing the shape.
     * Even better: visually display the intermediate steps.
 * Animate animated sprites.
-* Find out how to generate tile-based (background) graphics.
-    * Probably because the [jar file](http://tmtg.net/ludumdare/spritegen/SpriteGenerator.jar) is version 1.2, while the [source code](http://www.xs4all.nl/~borisvs/jgame-3.6.2.zip) is version 1.0.
 * Figure out the differences between [this](http://www.xs4all.nl/~borisvs/jgame-3.6.2.zip) and [that](https://github.com/angarg12/RandomSpriteGenerator).

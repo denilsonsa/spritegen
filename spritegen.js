@@ -691,8 +691,58 @@ const rand16filltable = [  // int[][]
 	[0,0,0,0,0,0,0,0],
 ];
 
+const tile12filltable = [  // int[][]
+	[2,2,2,2,2,2],
+	[2,2,2,2,2,2],
+	[2,2,2,2,2,2],
+	[2,2,2,2,2,2],
+	[2,2,2,2,2,2],
+	[2,2,2,2,2,2],
+];
+const tileplat12filltable = [  // int[][]
+	[A,A,A,A,A,A],
+	[A,A,A,A,A,A],
+	[A,A,A,A,A,A],
+	[A,A,A,A,A,A],
+	[A,A,A,A,A,A],
+	[A,A,A,A,A,A],
+];
+
 //////////////////////////////////////////////////////////////////////
 // Anim tables.
+
+// Param: int[][][]
+// Returns: int[][][]
+function rotateAnimTable(t) {
+	var lz = t.length;  // int
+	var ly = t[0].length;  // int
+	var lx = t[0][0].length;  // int
+	var ret = [];  // int[lz][lx][ly]
+
+	for (var z = 0; z < lz; z++) {
+		ret[z] = [];
+		for (var x = 0; x < lx; x++) {
+			ret[z][x] = [];
+			for (var y = 0; y < ly; y++) {
+				var v = t[z][y][x];  // int
+				if (v >= 1 && v <= 8) {
+					v += 2;
+					if (v > 8) {
+						v -= 8;
+					}
+				}
+				if (v >= 9 && v <= G) {
+					v += 2;
+					if (v > G) {
+						v -= 8;
+					}
+				}
+				ret[z][x][y] = v;
+			}
+		}
+	}
+	return ret;
+}
 
 const rand10walkanimtable = [[  // int[][][]
 	[0,0,0,0,0,0,0,0,0,0],
@@ -965,6 +1015,8 @@ const rand12flyanimtable = [[  // int[][][]
 	[3,3,3,3,3,3,7,7,7,7,7,7],
 ]];
 
+const rand12rflyanimtable = rotateAnimTable(rand12flyanimtable);  // int[][][]
+
 const rand12crawlanimtable = [[  // int[][][]
 	[0,0,0,0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0,0,0],
@@ -1018,35 +1070,6 @@ const rand12crawlanimtable = [[  // int[][][]
 	[0,0,7,7,7,7,7,7,7,8,8,8],
 	[0,0,0,7,7,7,7,7,8,8,8,8],
 ]];
-
-// Param: int[][][]
-// Returns: int[][][]
-function rotateAnimTable(t) {
-	var lz = t.length;  // int
-	var ly = t[0].length;  // int
-	var lx = t[0][0].length;  // int
-	var ret = [];  // int[lz][lx][ly]
-
-	for (var z = 0; z < lz; z++) {
-		ret[z] = [];
-		for (var x = 0; x < lx; x++) {
-			ret[z][x] = [];
-			for (var y = 0; y < ly; y++) {
-				var v = t[z][y][x];  // int
-				if (v >= 1 && v <= 8) {
-					v += 2;
-					if (v > 8) v -= 8;
-				}
-				if (v >= 9 && v <= G) {
-					v += 2;
-					if (v > G) v -= 8;
-				}
-				ret[z][x][y] = v;
-			}
-		}
-	}
-	return ret;
-}
 
 const rand12rcrawlanimtable = rotateAnimTable(rand12crawlanimtable);  // int[][][]
 
@@ -1428,7 +1451,9 @@ class PixelArtGen {
 				neigh = neigh || x < hull.length - 1    && (hull[x + 1][y] & 3) == 2;
 				neigh = neigh || y > 0                  && (hull[x][y - 1] & 3) == 2;
 				neigh = neigh || y < hull[x].length - 1 && (hull[x][y + 1] & 3) == 2;
-				if (neigh && hull[x][y] == 0) hull[x][y] = 3;
+				if (neigh && hull[x][y] == 0) {
+					hull[x][y] = 3;
+				}
 			}
 		}
 	}
@@ -1443,8 +1468,12 @@ class PixelArtGen {
 				neigh = neigh || x < pixels.length - 1    && pixels[x + 1][y] != transcolor && pixels[x + 1][y] != 0;
 				neigh = neigh || y > 0                    && pixels[x][y - 1] != transcolor && pixels[x][y - 1] != 0;
 				neigh = neigh || y < pixels[x].length - 1 && pixels[x][y + 1] != transcolor && pixels[x][y + 1] != 0;
-				if (neigh && pixels[x][y] == transcolor) pixels[x][y] = 0;
-				if (!neigh && pixels[x][y] == 0) pixels[x][y] = transcolor;
+				if (neigh && pixels[x][y] == transcolor) {
+					pixels[x][y] = 0;
+				}
+				if (!neigh && pixels[x][y] == 0) {
+					pixels[x][y] = transcolor;
+				}
 			}
 		}
 	}
@@ -1459,17 +1488,17 @@ class PixelArtGen {
 		var ymax = this.flipy ? Math.floor(this.ysize / 2) : this.ysize;  // int
 		for (var y = 0; y < ymax; y++) {
 			for (var x = 0; x < xmax; x++) {
-				if (Math.random() > weight) {
-					spr.colidx[x][y] = spr2.colidx[x][y];
-				} else {
+				if (Math.random() < weight) {
 					spr.colidx[x][y] = spr1.colidx[x][y];
+				} else {
+					spr.colidx[x][y] = spr2.colidx[x][y];
 				}
 			}
 		}
 		this.flipAndShade(spr);
 		this.indexToRGB(spr);
 		this.animate(spr);
-		this.addOutlineRGB(spr.pixels);
+		PixelArtGen.addOutlineRGB(spr.pixels);
 		return spr;
 	}
 
@@ -1491,28 +1520,23 @@ class PixelArtGen {
 				if (filltype_main == 1) {
 					// smooth = get colour from neighbouring pixel
 					if (Math.random() < this.fill_smoothing) {
-						var above = 0;  // int
-						var left = 0;  // int
-						var chosen = 0;  // int
-						if (x > 0) left  = (spr.hull[x - 1][y] & 3) == 2 ? 1 : 0;
-						if (y > 0) above = (spr.hull[x][y - 1] & 3) == 2 ? 1 : 0;
-						if (above == 0 && left == 0) {
-							chosen = 0;
-						} else if (above != 0 && left == 0) {
-							chosen = above;
-						} else if (above == 0 && left != 0) {
-							chosen = left;
-						} else if (above != 0 && left != 0) {
-							if (Math.random() < this.fill_smoothing_horiz_bias) {
-								chosen = left;
-							} else {
-								chosen = above;
-							}
+						var above = false;  // Boolean
+						var left = false;  // Boolean
+						if (x > 0) {
+							left = (spr.hull[x - 1][y] & 3) == 2;
 						}
-						if (chosen != 0) spr.hull[x][y] = filltype_fill;
+						if (y > 0) {
+							above = (spr.hull[x][y - 1] & 3) == 2;
+						}
+						var chosen = above || left;  // Boolean
+						if (chosen) {
+							spr.hull[x][y] = filltype_fill;
+						}
 					} else {
 						// Note: Probably a bug! The ">" should have been "<".
-						if (Math.random() > this.fill_prob) spr.hull[x][y] = filltype_fill;
+						if (Math.random() > this.fill_prob) {
+							spr.hull[x][y] = filltype_fill;
+						}
 					}
 				} else if (filltype_main == 2) {
 					spr.hull[x][y] = filltype_fill;
@@ -1525,7 +1549,7 @@ class PixelArtGen {
 		// Colour fill type is handled by colorize.
 		this.colorize(spr);
 		this.flipAndShade(spr);
-		if (this.shading == BEVEL) this.bevelShadeNew(spr);
+		if (this.shading == BEVEL  ) this.bevelShadeNew(spr);
 		if (this.shading == GOURAUD) this.gouraudShade(spr);
 		this.indexToRGB(spr);
 		this.animate(spr);
@@ -1576,8 +1600,8 @@ class PixelArtGen {
 						var above = 0;  // int
 						var left = 0;  // int
 						var chosen = 0;  // int
-						if (x > 0) left  = spr.colidx[x - 1][y] / 3;
-						if (y > 0) above = spr.colidx[x][y - 1] / 3;
+						if (x > 0) left  = Math.floor(spr.colidx[x - 1][y] / 3);
+						if (y > 0) above = Math.floor(spr.colidx[x][y - 1] / 3);
 						if (above == 0 && left == 0) {
 							chosen = 0;
 						} else if (above != 0 && left == 0) {
@@ -1662,7 +1686,7 @@ class PixelArtGen {
 						bright = Math.floor(bright / 2) + (dither ? 1 : 0);
 						spr.colidx[x][y] += bright;
 					} else {
-						if (((x + y) & 1) == 1) spr.colidx[x][y] = 5 * 3;
+						if (((x + y) & 1) == 1) spr.colidx[x][y] = 15;
 					}
 				}
 			}
@@ -1879,90 +1903,63 @@ class PixelArtGen {
 // Shapes.
 
 const shapes = [  // PixelArtGen[]
-	new PixelArtGen(16, 16, shipfilltable, null, true, false, 1, 1,
-		0.5, 0.6, 0.5, 0.3, 0.4, 0.6, 0.5),
-//	new PixelArtGen(16, 16, ship2filltable, birdanimtable, true, false, 1, 1,
-//		0.6, 0.5, 0.5, 0.3, 0.4, 0.5, 0.5),
-	new PixelArtGen(18, 18, butterflyfilltable18, birdanimtable18, true, false, 1, 1,
-		0.5, 0.7, 0.5, 0.3, 0.4, 0.6, 0.5),
-	new PixelArtGen(18, 18, manfilltable18, mananimtable18, true, false, 1, 1,
-		0.5, 0.6, 0.5, 0.3, 0.4, 0.6, 0.5),
-	new PixelArtGen(18, 18, ufofilltable18, null, true, true, 1, 1,
-		0.5, 0.75, 0.5, 0.3, 0.4, 0.8, 0.5),
-//	new PixelArtGen(16, 16, tilefilltable, null, true, true, 1, 1,
-//		0.5, 0.4, 0.5, 0.3, 0.4, 0.8, 0.5),
-//	new PixelArtGen(20, 12, fishfilltable, null, false, true, 1, 1,
-//		0.5, 0.2, 0.8, 0.3, 0.4, 0.6, 0.8),
-//	new PixelArtGen(16, 16, bubblefilltable, null, true, true, 1, 1,
-//		0.5, 0.6, 0.5, 0.3, 0.4, 0.6, 0.5),
-//	new PixelArtGen(10, 10, blob10filltable, null, true, false, 0, 0,
-//		0.5, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-//	new PixelArtGen(10, 10, rand10filltable, null, true, false, 0, 0,
-//		0.5, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-//	new PixelArtGen(6, 6, rand6filltable, null, true, false, 0, 0,
-//		0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-// ];
-// const shapes2 = [  // PixelArtGen[]
-//	new PixelArtGen(18, 18, butterflyfilltable18, birdanimtable18, true, false, 1, 1,
-//		0.5, 0.7, 0.5, 0.3, 0.4, 0.6, 0.5),
-//	new PixelArtGen(18, 18, manfilltable18, mananimtable18, true, false, 1, 1,
-//		0.5, 0.6, 0.5, 0.3, 0.4, 0.6, 0.5),
-//	new PixelArtGen(16, 16, shipfilltable, null, true, false, 1, 1,
-//		0.5, 0.6, 0.5, 0.3, 0.4, 0.6, 0.5),
-//	new PixelArtGen(10, 10, rand10filltable, rand10walkanimtable, true, false, 0, 0,
-//		0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-//	new PixelArtGen(10, 10, rand10filltable, rand10flyanimtable, true, false, 0, 0,
-//		0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12filltable, rand12walkanimtable,
-		true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12filltable, rand12flyanimtable,
-		true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12filltable, rand12rcrawlanimtable,
-		true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12filltable, rand12crawlanimtable,
-		true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12filltable, rand12bendanimtable,
-		true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12filltable, rand12bubbleanimtable,
-		true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12filltable, rand12pokeanimtable,
-		true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12yfilltable, rand12rwalkanimtable,
-		false, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12yfilltable, rand12crawlanimtable,
-		false, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12yfilltable, rand12bendanimtable,
-		false, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12yfilltable, rand12bubbleanimtable,
-		false, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12yfilltable, rand12pokeanimtable,
-		false, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-//	new PixelArtGen(16, 16, rand16filltable, null, true, false, 0, 0,
-//		0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-//	new PixelArtGen(8, 8, rand8afilltable, null, false, false, 0, 0,
-//		0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12dfilltable, rand12turnanimtable,
-		true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12dfilltable, rand12bendanimtable,
-		true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12dfilltable, rand12crawlanimtable,
-		true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12dfilltable, rand12bubbleanimtable,
-		true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12dfilltable, rand12pokeanimtable,
-		true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12filltable, rand12wiggleanimtable,
-		true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12yfilltable, rand12rwiggleanimtable,
-		false, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12filltable, rand12bounceanimtable,
-		true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12dfilltable, rand12bounceanimtable,
-		true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12filltable, rand12nullanimtable,
-		true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12dfilltable, rand12nullanimtable,
-		true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	// Old shapes:
+	new PixelArtGen(16, 16, shipfilltable, null, true, false, 1, 1, 0.5, 0.6, 0.5, 0.3, 0.4, 0.6, 0.5),
+//	new PixelArtGen(16, 16, ship2filltable, birdanimtable, true, false, 1, 1, 0.6, 0.5, 0.5, 0.3, 0.4, 0.5, 0.5),
+	new PixelArtGen(18, 18, butterflyfilltable18, birdanimtable18, true, false, 1, 1, 0.5, 0.7, 0.5, 0.3, 0.4, 0.6, 0.5),
+	new PixelArtGen(18, 18, manfilltable18, mananimtable18, true, false, 1, 1, 0.5, 0.6, 0.5, 0.3, 0.4, 0.6, 0.5),
+	new PixelArtGen(18, 18, ufofilltable18, null, true, true, 1, 1, 0.5, 0.75, 0.5, 0.3, 0.4, 0.8, 0.5),
+//	new PixelArtGen(16, 16, tilefilltable, null, true, true, 1, 1, 0.5, 0.4, 0.5, 0.3, 0.4, 0.8, 0.5),
+//	new PixelArtGen(20, 12, fishfilltable, null, false, true, 1, 1, 0.5, 0.2, 0.8, 0.3, 0.4, 0.6, 0.8),
+//	new PixelArtGen(16, 16, bubblefilltable, null, true, true, 1, 1, 0.5, 0.6, 0.5, 0.3, 0.4, 0.6, 0.5),
+//	new PixelArtGen(10, 10, blob10filltable, null, true, false, 0, 0, 0.5, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+//	new PixelArtGen(10, 10, rand10filltable, null, true, false, 0, 0, 0.5, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+//	new PixelArtGen(6, 6, rand6filltable, null, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	// New shapes:
+//	new PixelArtGen(18, 18, butterflyfilltable18, birdanimtable18, true, false, 1, 1, 0.5, 0.7, 0.5, 0.3, 0.4, 0.6, 0.5),
+//	new PixelArtGen(18, 18, manfilltable18, mananimtable18, true, false, 1, 1, 0.5, 0.6, 0.5, 0.3, 0.4, 0.6, 0.5),
+//	new PixelArtGen(16, 16, shipfilltable, null, true, false, 1, 1, 0.5, 0.6, 0.5, 0.3, 0.4, 0.6, 0.5),
+//	new PixelArtGen(10, 10, rand10filltable, rand10walkanimtable, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+//	new PixelArtGen(10, 10, rand10filltable, rand10flyanimtable, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12filltable, rand12walkanimtable, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12yfilltable, rand12rwalkanimtable, false, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12filltable, rand12flyanimtable, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12yfilltable, rand12rflyanimtable, false, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12filltable, rand12rcrawlanimtable, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12filltable, rand12crawlanimtable, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12yfilltable, rand12crawlanimtable, false, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12dfilltable, rand12crawlanimtable, true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12filltable, rand12bendanimtable, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12yfilltable, rand12bendanimtable, false, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12dfilltable, rand12bendanimtable, true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12filltable, rand12bubbleanimtable, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12yfilltable, rand12bubbleanimtable, false, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12dfilltable, rand12bubbleanimtable, true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12filltable, rand12pokeanimtable, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12yfilltable, rand12pokeanimtable, false, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12dfilltable, rand12pokeanimtable, true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+//	new PixelArtGen(16, 16, rand16filltable, null, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+//	new PixelArtGen(8, 8, rand8afilltable, null, false, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12dfilltable, rand12turnanimtable, true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12filltable, rand12wiggleanimtable, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12yfilltable, rand12rwiggleanimtable, false, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12filltable, rand12bounceanimtable, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12dfilltable, rand12bounceanimtable, true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12filltable, rand12nullanimtable, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12dfilltable, rand12nullanimtable, true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	// Tiles:
+	new PixelArtGen(12, 12, tile12filltable, rand12nullanimtable, true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.2, 0.5),
+	new PixelArtGen(12, 12, tile12filltable, rand12nullanimtable, true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.7, 0.5),
+	new PixelArtGen(12, 12, tile12filltable, rand12nullanimtable, true, true, 1, 1, 0.6, 0.2, 0.5, 0.3, 0.4, 0.2, 0.5),
+	new PixelArtGen(12, 12, tile12filltable, rand12nullanimtable, true, true, 1, 1, 0.6, 0.2, 0.5, 0.3, 0.4, 0.7, 0.5),
+	new PixelArtGen(12, 12, tile12filltable, rand12nullanimtable, true, true, 0, 2, 0.6, 0.2, 0.5, 0.3, 0.4, 0.2, 0.5),
+	new PixelArtGen(12, 12, tile12filltable, rand12nullanimtable, true, true, 0, 2, 0.6, 0.2, 0.5, 0.3, 0.4, 0.7, 0.5),
+	new PixelArtGen(12, 12, tileplat12filltable, rand12nullanimtable, true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.2, 0.5),
+	new PixelArtGen(12, 12, tileplat12filltable, rand12nullanimtable, true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.7, 0.5),
+	new PixelArtGen(12, 12, tileplat12filltable, rand12nullanimtable, true, true, 1, 1, 0.6, 0.2, 0.5, 0.3, 0.4, 0.2, 0.5),
+	new PixelArtGen(12, 12, tileplat12filltable, rand12nullanimtable, true, true, 1, 1, 0.6, 0.2, 0.5, 0.3, 0.4, 0.7, 0.5),
+	new PixelArtGen(12, 12, tileplat12filltable, rand12nullanimtable, true, true, 0, 2, 0.6, 0.2, 0.5, 0.3, 0.4, 0.2, 0.5),
+	new PixelArtGen(12, 12, tileplat12filltable, rand12nullanimtable, true, true, 0, 2, 0.6, 0.2, 0.5, 0.3, 0.4, 0.7, 0.5),
 ];
 
 //////////////////////////////////////////////////////////////////////
@@ -2018,7 +2015,7 @@ class Sprite {
 	getData(frame) {
 		var totalwidth = this.width;  // int
 		var nrframes = this.getNrFrames();  // int
-		var width = totalwidth / nrframes;  // int
+		var width = Math.floor(totalwidth / nrframes);  // int
 		var ret = [];  // int[]
 		ret[width * this.height - 1] = 0;  // Initializing array size
 		for (var x = 0; x < width; x++) {
@@ -2117,25 +2114,10 @@ function genSpriteColorScheme(transcol, black, colors, shades) {
 		ret[i + shades] = black;
 		ret[i + shades * (colors + 2)] = HSVtoRGB(0, 0, 1.0 - darken * i);
 	}
-	var hshift, svshift, s, h;  // double
-	do {  // find good combination
-		if (Math.random() > 0.5) {
-			hshift = Math.random();  // random colors
-		} else {
-			hshift = 0.1 * Math.random();  // tight color key
-		}
-		svshift = 0.5 * Math.random();
-		s = 0.5 + 0.5 * Math.random();
-		h = Math.random();
-		// We want either big hshift or big svshift.
-		if ( (hshift < 0.2 || hshift > 0.8) && svshift < 0.2) continue;
-		// If we have low s, we want svshift to be high enough to shift it to 1.
-		if (s + svshift < 1) continue;
-		// Reject some pervasive greens.
-		if (h >= 0.1666667 && h <= 0.4
-		&&  (hshift < 0.1 || hshift > 0.9)
-		&&  Math.random() > 0.5) continue;
-	} while (false);
+	var hshift = Math.random() > 0.5 ? Math.random() : 0.2 * Math.random();  // double
+	var svshift = 0.5 * Math.random();  // double
+	var s = 0.5 + 0.5 * Math.random();  // double
+	var h = Math.random();  // double
 	svshift /= (shades - 1); // Normalise over shades
 	var shadeshift = (0.4 + 0.3 * Math.random()) / (shades - 1);  // double
 	var v = 1.0;  // double
