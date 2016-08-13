@@ -12,6 +12,15 @@ function randrange(begin, end) {
 	return Math.floor(Math.random() * (end - begin) + begin);
 }
 
+function clear_context(ctx) {
+	ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+}
+
+function clear_canvas(canvas) {
+	var ctx = canvas.getContext('2d');
+	clear_context(ctx);
+}
+
 ////////////////////////////////////////////////////////////
 // UI interaction.
 
@@ -24,7 +33,7 @@ function redraw_canvases() {
 	rawcanvas.width = w;
 	rawcanvas.height = h;
 	ctx.imageSmoothingEnabled = false;
-	ctx.clearRect(0, 0, rawcanvas.width, rawcanvas.height);
+	clear_context(ctx);
 	g_imagedata = createImageDataFromSprite(g_sprite, ctx);
 	ctx.putImageData(g_imagedata, 0, 0);
 
@@ -33,7 +42,7 @@ function redraw_canvases() {
 	zoomedcanvas.width = w * 4;
 	zoomedcanvas.height = h * 4;
 	zctx.imageSmoothingEnabled = false;
-	zctx.clearRect(0, 0, zoomedcanvas.width, zoomedcanvas.height);
+	clear_context(zctx);
 	zctx.drawImage(rawcanvas,
 		0, 0,
 		w, h,

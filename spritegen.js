@@ -1533,7 +1533,7 @@ class PixelArtGen {
 							spr.hull[x][y] = filltype_fill;
 						}
 					} else {
-						// Note: Probably a bug! The ">" should have been "<".
+						// XXX: Probably a bug! The ">" should have been "<".
 						if (Math.random() > this.fill_prob) {
 							spr.hull[x][y] = filltype_fill;
 						}
@@ -1903,63 +1903,67 @@ class PixelArtGen {
 // Shapes.
 
 const shapes = [  // PixelArtGen[]
-	// Old shapes:
-	new PixelArtGen(16, 16, shipfilltable, null, true, false, 1, 1, 0.5, 0.6, 0.5, 0.3, 0.4, 0.6, 0.5),
-//	new PixelArtGen(16, 16, ship2filltable, birdanimtable, true, false, 1, 1, 0.6, 0.5, 0.5, 0.3, 0.4, 0.5, 0.5),
-	new PixelArtGen(18, 18, butterflyfilltable18, birdanimtable18, true, false, 1, 1, 0.5, 0.7, 0.5, 0.3, 0.4, 0.6, 0.5),
-	new PixelArtGen(18, 18, manfilltable18, mananimtable18, true, false, 1, 1, 0.5, 0.6, 0.5, 0.3, 0.4, 0.6, 0.5),
-	new PixelArtGen(18, 18, ufofilltable18, null, true, true, 1, 1, 0.5, 0.75, 0.5, 0.3, 0.4, 0.8, 0.5),
-//	new PixelArtGen(16, 16, tilefilltable, null, true, true, 1, 1, 0.5, 0.4, 0.5, 0.3, 0.4, 0.8, 0.5),
-//	new PixelArtGen(20, 12, fishfilltable, null, false, true, 1, 1, 0.5, 0.2, 0.8, 0.3, 0.4, 0.6, 0.8),
-//	new PixelArtGen(16, 16, bubblefilltable, null, true, true, 1, 1, 0.5, 0.6, 0.5, 0.3, 0.4, 0.6, 0.5),
-//	new PixelArtGen(10, 10, blob10filltable, null, true, false, 0, 0, 0.5, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-//	new PixelArtGen(10, 10, rand10filltable, null, true, false, 0, 0, 0.5, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-//	new PixelArtGen(6, 6, rand6filltable, null, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	// New shapes:
-//	new PixelArtGen(18, 18, butterflyfilltable18, birdanimtable18, true, false, 1, 1, 0.5, 0.7, 0.5, 0.3, 0.4, 0.6, 0.5),
-//	new PixelArtGen(18, 18, manfilltable18, mananimtable18, true, false, 1, 1, 0.5, 0.6, 0.5, 0.3, 0.4, 0.6, 0.5),
-//	new PixelArtGen(16, 16, shipfilltable, null, true, false, 1, 1, 0.5, 0.6, 0.5, 0.3, 0.4, 0.6, 0.5),
-//	new PixelArtGen(10, 10, rand10filltable, rand10walkanimtable, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-//	new PixelArtGen(10, 10, rand10filltable, rand10flyanimtable, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12filltable, rand12walkanimtable, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12yfilltable, rand12rwalkanimtable, false, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12filltable, rand12flyanimtable, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12yfilltable, rand12rflyanimtable, false, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12filltable, rand12rcrawlanimtable, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12filltable, rand12crawlanimtable, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12yfilltable, rand12crawlanimtable, false, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12dfilltable, rand12crawlanimtable, true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12filltable, rand12bendanimtable, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12yfilltable, rand12bendanimtable, false, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12dfilltable, rand12bendanimtable, true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12filltable, rand12bubbleanimtable, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12yfilltable, rand12bubbleanimtable, false, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12dfilltable, rand12bubbleanimtable, true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12filltable, rand12pokeanimtable, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12yfilltable, rand12pokeanimtable, false, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12dfilltable, rand12pokeanimtable, true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-//	new PixelArtGen(16, 16, rand16filltable, null, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-//	new PixelArtGen(8, 8, rand8afilltable, null, false, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12dfilltable, rand12turnanimtable, true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12filltable, rand12wiggleanimtable, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12yfilltable, rand12rwiggleanimtable, false, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12filltable, rand12bounceanimtable, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12dfilltable, rand12bounceanimtable, true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12filltable, rand12nullanimtable, true, false, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
-	new PixelArtGen(12, 12, rand12dfilltable, rand12nullanimtable, true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.3, 0.5),
+	// shad -> xshadingfac, yshadingfac
+	// fb   -> fill_prob
+	// fs   -> fill_smoothing
+	// fsh  -> fill_smoothing_horiz_bias
+	// bp   -> black_prob
+	// hp   -> highlight_prob
+	// cs   -> color_smoothing
+	// csh  -> color_smoothing_horiz_bias
+	//               w   h  filltable             animtable               flipx  flipy  shad  fp   fs    fsh  bp   hp   cs   csh
+	new PixelArtGen( 6,  6, rand6filltable      , null                  , true , false, 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen( 8,  8, rand8afilltable     , null                  , false, false, 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(10, 10, blob10filltable     , null                  , true , false, 0, 0, 0.5, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(10, 10, rand10filltable     , null                  , true , false, 0, 0, 0.5, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(10, 10, rand10filltable     , rand10walkanimtable   , true , false, 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(10, 10, rand10filltable     , rand10flyanimtable    , true , false, 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12filltable     , rand12walkanimtable   , true , false, 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12yfilltable    , rand12rwalkanimtable  , false, true , 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12filltable     , rand12flyanimtable    , true , false, 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12yfilltable    , rand12rflyanimtable   , false, true , 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12filltable     , rand12rcrawlanimtable , true , false, 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12filltable     , rand12crawlanimtable  , true , false, 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12yfilltable    , rand12crawlanimtable  , false, true , 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12dfilltable    , rand12crawlanimtable  , true , true , 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12filltable     , rand12bendanimtable   , true , false, 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12yfilltable    , rand12bendanimtable   , false, true , 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12dfilltable    , rand12bendanimtable   , true , true , 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12filltable     , rand12bubbleanimtable , true , false, 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12yfilltable    , rand12bubbleanimtable , false, true , 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12dfilltable    , rand12bubbleanimtable , true , true , 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12filltable     , rand12pokeanimtable   , true , false, 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12yfilltable    , rand12pokeanimtable   , false, true , 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12dfilltable    , rand12pokeanimtable   , true , true , 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12dfilltable    , rand12turnanimtable   , true , true , 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12filltable     , rand12wiggleanimtable , true , false, 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12yfilltable    , rand12rwiggleanimtable, false, true , 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12filltable     , rand12bounceanimtable , true , false, 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12dfilltable    , rand12bounceanimtable , true , true , 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12filltable     , rand12nullanimtable   , true , false, 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(12, 12, rand12dfilltable    , rand12nullanimtable   , true , true , 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(16, 16, rand16filltable     , null                  , true , false, 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.3, 0.5),
+	new PixelArtGen(16, 16, shipfilltable       , null                  , true , false, 1, 1, 0.5, 0.6 , 0.5, 0.3, 0.4, 0.6, 0.5),
+	new PixelArtGen(16, 16, ship2filltable      , birdanimtable         , true , false, 1, 1, 0.6, 0.5 , 0.5, 0.3, 0.4, 0.5, 0.5),
+	new PixelArtGen(16, 16, bubblefilltable     , null                  , true , true , 1, 1, 0.5, 0.6 , 0.5, 0.3, 0.4, 0.6, 0.5),
+	new PixelArtGen(18, 18, ufofilltable18      , null                  , true , true , 1, 1, 0.5, 0.75, 0.5, 0.3, 0.4, 0.8, 0.5),
+	new PixelArtGen(18, 18, butterflyfilltable18, birdanimtable18       , true , false, 1, 1, 0.5, 0.7 , 0.5, 0.3, 0.4, 0.6, 0.5),
+	new PixelArtGen(18, 18, manfilltable18      , mananimtable18        , true , false, 1, 1, 0.5, 0.6 , 0.5, 0.3, 0.4, 0.6, 0.5),
+	new PixelArtGen(20, 12, fishfilltable       , null                  , false, true , 1, 1, 0.5, 0.2 , 0.8, 0.3, 0.4, 0.6, 0.8),
 	// Tiles:
-	new PixelArtGen(12, 12, tile12filltable, rand12nullanimtable, true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.2, 0.5),
-	new PixelArtGen(12, 12, tile12filltable, rand12nullanimtable, true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.7, 0.5),
-	new PixelArtGen(12, 12, tile12filltable, rand12nullanimtable, true, true, 1, 1, 0.6, 0.2, 0.5, 0.3, 0.4, 0.2, 0.5),
-	new PixelArtGen(12, 12, tile12filltable, rand12nullanimtable, true, true, 1, 1, 0.6, 0.2, 0.5, 0.3, 0.4, 0.7, 0.5),
-	new PixelArtGen(12, 12, tile12filltable, rand12nullanimtable, true, true, 0, 2, 0.6, 0.2, 0.5, 0.3, 0.4, 0.2, 0.5),
-	new PixelArtGen(12, 12, tile12filltable, rand12nullanimtable, true, true, 0, 2, 0.6, 0.2, 0.5, 0.3, 0.4, 0.7, 0.5),
-	new PixelArtGen(12, 12, tileplat12filltable, rand12nullanimtable, true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.2, 0.5),
-	new PixelArtGen(12, 12, tileplat12filltable, rand12nullanimtable, true, true, 0, 0, 0.6, 0.2, 0.5, 0.3, 0.4, 0.7, 0.5),
-	new PixelArtGen(12, 12, tileplat12filltable, rand12nullanimtable, true, true, 1, 1, 0.6, 0.2, 0.5, 0.3, 0.4, 0.2, 0.5),
-	new PixelArtGen(12, 12, tileplat12filltable, rand12nullanimtable, true, true, 1, 1, 0.6, 0.2, 0.5, 0.3, 0.4, 0.7, 0.5),
-	new PixelArtGen(12, 12, tileplat12filltable, rand12nullanimtable, true, true, 0, 2, 0.6, 0.2, 0.5, 0.3, 0.4, 0.2, 0.5),
-	new PixelArtGen(12, 12, tileplat12filltable, rand12nullanimtable, true, true, 0, 2, 0.6, 0.2, 0.5, 0.3, 0.4, 0.7, 0.5),
+	new PixelArtGen(12, 12, tile12filltable     , rand12nullanimtable   , true , true , 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.2, 0.5),
+	new PixelArtGen(12, 12, tile12filltable     , rand12nullanimtable   , true , true , 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.7, 0.5),
+	new PixelArtGen(12, 12, tile12filltable     , rand12nullanimtable   , true , true , 1, 1, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.2, 0.5),
+	new PixelArtGen(12, 12, tile12filltable     , rand12nullanimtable   , true , true , 1, 1, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.7, 0.5),
+	new PixelArtGen(12, 12, tile12filltable     , rand12nullanimtable   , true , true , 0, 2, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.2, 0.5),
+	new PixelArtGen(12, 12, tile12filltable     , rand12nullanimtable   , true , true , 0, 2, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.7, 0.5),
+	new PixelArtGen(12, 12, tileplat12filltable , rand12nullanimtable   , true , true , 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.2, 0.5),
+	new PixelArtGen(12, 12, tileplat12filltable , rand12nullanimtable   , true , true , 0, 0, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.7, 0.5),
+	new PixelArtGen(12, 12, tileplat12filltable , rand12nullanimtable   , true , true , 1, 1, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.2, 0.5),
+	new PixelArtGen(12, 12, tileplat12filltable , rand12nullanimtable   , true , true , 1, 1, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.7, 0.5),
+	new PixelArtGen(12, 12, tileplat12filltable , rand12nullanimtable   , true , true , 0, 2, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.2, 0.5),
+	new PixelArtGen(12, 12, tileplat12filltable , rand12nullanimtable   , true , true , 0, 2, 0.6, 0.2 , 0.5, 0.3, 0.4, 0.7, 0.5),
+	new PixelArtGen(16, 16, tilefilltable       , null                  , true , true , 1, 1, 0.5, 0.4 , 0.5, 0.3, 0.4, 0.8, 0.5),
 ];
 
 //////////////////////////////////////////////////////////////////////
@@ -2010,26 +2014,14 @@ class Sprite {
 		return this.gen.animtable.length + 1;
 	}
 
-	// Param: int
-	// Returns: int[]
-	getData(frame) {
-		var totalwidth = this.width;  // int
-		var nrframes = this.getNrFrames();  // int
-		var width = Math.floor(totalwidth / nrframes);  // int
-		var ret = [];  // int[]
-		ret[width * this.height - 1] = 0;  // Initializing array size
-		for (var x = 0; x < width; x++) {
-			var pixcol = this.pixels[width * frame + x];  // int[]
-			for (var y = 0; y < pixcol.length; y++) {
-				var idx = x + width * y;  // int
-				if (pixcol[y] == transcolor) {
-					ret[idx++] = 0;
-				} else {
-					ret[idx++] = 0xff000000 | pixcol[y];
-				}
+	// Resets the pixel data to transparent.
+	// Retuns: nothing
+	clear() {
+		for (var i = 0; i < this.pixels.length; i++) {
+			for (var j = 0; j < this.pixels[i].length; j++) {
+				this.pixels[i][j] = transcolor;
 			}
 		}
-		return ret;
 	}
 }
 
