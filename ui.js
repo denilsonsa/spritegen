@@ -21,6 +21,18 @@ function clear_canvas(canvas) {
 	clear_context(ctx);
 }
 
+function reset_context(ctx, width, height) {
+	if (width && height) {
+		ctx.canvas.width = width
+		ctx.canvas.height = height;
+	}
+	ctx.webkitImageSmoothingEnabled = false;
+	ctx.mozImageSmoothingEnabled = false;
+	ctx.msImageSmoothingEnabled = false;
+	ctx.imageSmoothingEnabled = false;
+	clear_context(ctx);
+}
+
 ////////////////////////////////////////////////////////////
 // UI interaction.
 
@@ -30,19 +42,13 @@ function redraw_canvases() {
 
 	var rawcanvas = document.getElementById('raw');
 	var ctx = rawcanvas.getContext('2d');
-	rawcanvas.width = w;
-	rawcanvas.height = h;
-	ctx.imageSmoothingEnabled = false;
-	clear_context(ctx);
+	reset_context(ctx, w, h);
 	g_imagedata = createImageDataFromSprite(g_sprite, ctx);
 	ctx.putImageData(g_imagedata, 0, 0);
 
 	var zoomedcanvas = document.getElementById('zoomed');
 	var zctx = zoomedcanvas.getContext('2d');
-	zoomedcanvas.width = w * 4;
-	zoomedcanvas.height = h * 4;
-	zctx.imageSmoothingEnabled = false;
-	clear_context(zctx);
+	reset_context(zctx, w * 4, h * 4);
 	zctx.drawImage(rawcanvas,
 		0, 0,
 		w, h,
