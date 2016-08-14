@@ -13,9 +13,10 @@ TODO:
 
 * Create a better UI.
 * Add more sliders and toggles for fine-tuning the parameters.
-* Allow re-doing (and/or disabling) specific steps (the last function calls from `PixelArtGen.createSprite function`).
+* Allow re-doing (and/or disabling) specific steps (the last function calls from `PixelArtGen.createSprite` function).
     * This certainly requires clearing the `Sprite.pixels` to transparent.
     * This might allow recoloring a sprite without changing the shape.
     * Even better: visually display the intermediate steps.
 * Animate animated sprites.
+* Allow mutating a sprite (`PixelArtGen.mergeSprites` function).
 * Figure out the differences between [this](http://www.xs4all.nl/~borisvs/jgame-3.6.2.zip) and [that](https://github.com/angarg12/RandomSpriteGenerator).
