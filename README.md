@@ -1,11 +1,11 @@
-This is a conversion from Java to Javascript of [Random game sprite generator](http://tmtg.net/ludumdare/spritegen/) by [Boris van Schooten](http://tmtg.net/).
+This is a conversion from Java to Javascript of [Random game sprite generator](https://tmtg.nl/ludumdare/spritegen/) by [Boris van Schooten](https://tmtg.nl/).
 
-http://denilsonsa.github.io/spritegen/spritegen.html
+https://denilsonsa.github.io/spritegen/spritegen.html
 
 Other links:
 
 * https://github.com/angarg12/RandomSpriteGenerator
-* http://img.uninhabitant.com/spritegen.html
+* https://web.archive.org/web/20221016034741/http://www.img.uninhabitant.com/spritegen.html
 * http://eandegames.weebly.com/devlog/gamedev-resource-pick-random-sprite-generators
 * http://eandegames.com/gamedev-resource-pick-random-sprite-generators/
 
@@ -19,4 +19,4 @@ TODO:
     * Even better: visually display the intermediate steps.
 * Animate animated sprites.
 * Allow mutating a sprite (`PixelArtGen.mergeSprites` function).
-* Figure out the differences between [this](http://www.xs4all.nl/~borisvs/jgame-3.6.2.zip) and [that](https://github.com/angarg12/RandomSpriteGenerator).
+* Figure out the differences between [this](https://web.archive.org/web/*/http://www.xs4all.nl/~borisvs/jgame*) and [that](https://github.com/angarg12/RandomSpriteGenerator).
